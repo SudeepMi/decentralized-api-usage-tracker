@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "functions": {
+    "api/*.ts": {
+      "runtime": "nodejs18.x"
+    }
+  },
+  "env": {
+    "MONGODB_URI": "@mongodb-uri",
+    "MONGODB_DB_NAME": "@mongodb-db-name",
+    "BLOCKCHAIN_RPC": "@blockchain-rpc",
+    "BLOCKCHAIN_PRIVATE_KEY": "@blockchain-private-key",
+    "BLOCKCHAIN_CONTRACT_ADDRESS": "@blockchain-contract-address",
+    "PROXY_TARGET_BASE": "@proxy-target-base"
+  }
+} 
