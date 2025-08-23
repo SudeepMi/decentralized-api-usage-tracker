@@ -8,13 +8,5 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "installCommand": "npm install",
-  "framework": "vite",
-  "env": {
-    "MONGODB_URI": "@mongodb-uri",
-    "MONGODB_DB_NAME": "@mongodb-db-name",
-    "BLOCKCHAIN_RPC": "@blockchain-rpc",
-    "BLOCKCHAIN_PRIVATE_KEY": "@blockchain-private-key",
-    "BLOCKCHAIN_CONTRACT_ADDRESS": "@blockchain-contract-address",
-    "PROXY_TARGET_BASE": "@proxy-target-base"
-  }
+  "framework": "vite"
 } 
