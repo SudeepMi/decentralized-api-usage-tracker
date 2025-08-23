@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import type { VercelRequest, VercelResponse } from '@vercel/node';
 import axios from 'axios';
 import crypto from 'crypto';
 import { ethers } from 'ethers';
@@ -31,7 +31,7 @@ const sha256Hex = (s: string): string =>
 const keccakBytes32 = (s: string): string =>
   ethers.keccak256(ethers.toUtf8Bytes(s));
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
