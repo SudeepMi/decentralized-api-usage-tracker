@@ -27,14 +27,23 @@ A decentralized API usage tracking system built with Vercel serverless functions
 │   ├── register.ts        # API key registration
 │   ├── proxy.ts           # API proxy with usage tracking
 │   └── usage.ts           # Usage statistics
-├── blockchain/            # Smart contracts and deployment
-│   ├── contracts/         # Solidity contracts
-│   └── scripts/           # Deployment scripts
-├── frontend/              # React frontend application
-├── scripts/               # Database setup and utilities
-├── docs/                  # Documentation
-└── README.md             # This file
+├── src/                   # Source code and assets
+│   ├── blockchain/        # Smart contracts and deployment
+│   ├── scripts/           # Database setup and utilities
+│   └── docs/              # Documentation
+├── App.tsx               # React main component
+├── main.tsx              # React entry point
+├── index.html            # HTML entry point
+├── index.css             # Global styles
+├── vite.config.ts        # Vite configuration
+├── tailwind.config.js    # Tailwind CSS configuration
+├── postcss.config.js     # PostCSS configuration
+├── tsconfig.json         # TypeScript configuration
+├── vercel.json           # Vercel deployment configuration
+└── package.json          # Dependencies and scripts
 ```
+
+**Note**: This structure is optimized for Vercel deployment with frontend files at the root level and API functions in the `api/` directory.
 
 ## 🚀 Quick Start
 
@@ -80,11 +89,12 @@ For detailed setup instructions, see the [Quick Start Guide](QUICK_START.md).
 
 ## 📚 Documentation
 
-- [Quick Start Guide](QUICK_START.md) - Get up and running in minutes
-- [MongoDB Migration Guide](MONGODB_MIGRATION.md) - Complete Firebase to MongoDB migration
-- [Vercel Migration Guide](VERCEL_MIGRATION.md) - Firebase Functions to Vercel migration
-- [API Examples](docs/API_EXAMPLES.md) - API usage examples and documentation
-- [Setup Guide](docs/SETUP.md) - Detailed setup instructions
+- [Quick Start Guide](src/docs/QUICK_START.md) - Get up and running in minutes
+- [Deployment Guide](src/docs/DEPLOYMENT_GUIDE.md) - Optimized structure for Vercel deployment
+- [Vercel Migration Guide](src/docs/VERCEL_MIGRATION.md) - Firebase Functions to Vercel migration
+- [MongoDB Migration Guide](src/docs/MONGODB_MIGRATION.md) - Complete Firebase to MongoDB migration
+- [API Examples](src/docs/API_EXAMPLES.md) - API usage examples and documentation
+- [Setup Guide](src/docs/SETUP.md) - Detailed setup instructions
 
 ## 🔧 API Endpoints
 

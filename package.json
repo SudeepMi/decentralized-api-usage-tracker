@@ -5,23 +5,41 @@
   "main": "index.js",
   "scripts": {
     "dev": "vercel dev",
-    "build": "vercel build",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
     "deploy": "vercel --prod",
     "start": "vercel dev",
-    "setup": "node scripts/setup-mongodb.js"
+    "setup": "node src/scripts/setup-mongodb.js",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
     "@vercel/node": "^3.0.0",
     "axios": "^1.7.2",
     "ethers": "^6.13.0",
     "mongodb": "^6.3.0",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "lucide-react": "^0.263.1",
+    "react-hot-toast": "^2.4.1"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
     "@types/uuid": "^9.0.8",
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "@vitejs/plugin-react": "^4.0.3",
+    "autoprefixer": "^10.4.14",
+    "eslint": "^8.45.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.3",
+    "postcss": "^8.4.27",
+    "tailwindcss": "^3.3.3",
     "typescript": "^5.5.4",
-    "vercel": "^33.0.0"
+    "vercel": "^33.0.0",
+    "vite": "^4.4.5"
   },
   "keywords": [
     "api",
@@ -29,7 +47,9 @@
     "usage-tracking",
     "serverless",
     "vercel",
-    "mongodb"
+    "mongodb",
+    "react",
+    "frontend"
   ],
   "author": "",
   "license": "MIT"

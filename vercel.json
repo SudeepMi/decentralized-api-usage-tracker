@@ -5,6 +5,10 @@
       "runtime": "nodejs18.x"
     }
   },
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "installCommand": "npm install",
+  "framework": "vite",
   "env": {
     "MONGODB_URI": "@mongodb-uri",
     "MONGODB_DB_NAME": "@mongodb-db-name",
