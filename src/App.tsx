@@ -3,8 +3,8 @@ import { Key, Activity, Database, ExternalLink, Copy, CheckCircle, AlertCircle }
 import toast from 'react-hot-toast'
 import axios from 'axios'
 
-// Configuration - replace with your Firebase Functions URL
-const API_BASE_URL = 'https://your-project.cloudfunctions.net'
+// Configuration - replace with your Vercel Functions URL
+const API_BASE_URL = 'https://decentralized-api-usage-tracker.vercel.app'
 
 interface UsageData {
   totalUsage: number
