@@ -328,6 +328,31 @@ function App() {
               📁 View on GitHub
             </a>
           </p>
+          
+          {/* Support Message */}
+          <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <p className="text-blue-800 font-medium mb-2">
+              💙 Support this project
+            </p>
+            <p className="text-blue-700 text-xs mb-3">
+              Help keep this app alive by sending Sepolia ETH for gas fees
+            </p>
+            <div className="flex items-center justify-center space-x-2">
+              <span className="text-blue-600 font-mono text-xs break-all">
+                0x3748C588afC6EC03B21c78c3aE38aE57b22c4F27
+              </span>
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText('0x3748C588afC6EC03B21c78c3aE38aE57b22c4F27');
+                  toast.success('Wallet address copied!');
+                }}
+                className="text-blue-600 hover:text-blue-700"
+                title="Copy wallet address"
+              >
+                <Copy className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
