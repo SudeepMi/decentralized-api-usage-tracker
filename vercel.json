@@ -1,7 +1,13 @@
 {
   "version": 2,
   "functions": {
-    "api/*.ts": {
+    "api/register.ts": {
+      "runtime": "@vercel/node@5.3.13"
+    },
+    "api/usage.ts": {
+      "runtime": "@vercel/node@5.3.13"
+    },
+    "api/proxy.ts": {
       "runtime": "@vercel/node@5.3.13"
     }
   },
