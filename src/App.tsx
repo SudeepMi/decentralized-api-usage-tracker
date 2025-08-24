@@ -318,6 +318,16 @@ function App() {
           <p className="mt-2">
             All API usage is logged to both MongoDB and the Sepolia blockchain for transparency
           </p>
+          <p className="mt-2">
+            <a 
+              href="https://github.com/SudeepMi/decentralized-api-usage-tracker" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-primary-600 hover:text-primary-700 underline"
+            >
+              📁 View on GitHub
+            </a>
+          </p>
         </div>
       </div>
     </div>
