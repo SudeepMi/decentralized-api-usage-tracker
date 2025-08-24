@@ -1,57 +1,61 @@
-# 📚 API Usage Examples
+# API Examples
 
-This document provides examples of how to use the Decentralized API Usage Tracker.
+Complete guide to using the Decentralized API Usage Tracker endpoints with practical examples.
 
-## API Endpoints
+## 🔑 Base URL
 
-### Base URL
+Replace `{YOUR_APP_URL}` with your deployed Vercel application URL:
 ```
-https://your-project.cloudfunctions.net
+https://your-app.vercel.app/api
 ```
 
-## 1. Generate API Key
+## 📝 API Key Registration
 
-**Endpoint:** `GET /register`
+### Generate New API Key
 
-**Parameters:**
-- `userId` (string): Unique identifier for the user
+**Endpoint**: `GET /api/register`
 
-**Example:**
+**Parameters**:
+- `userId` (required): Unique identifier for the user
+
+**Example**:
 ```bash
-curl "https://your-project.cloudfunctions.net/register?userId=john_doe"
+curl "https://your-app.vercel.app/api/register?userId=john-doe"
 ```
 
-**Response:**
+**Response**:
 ```json
 {
   "success": true,
-  "apiKey": "a1b2c3d4e5f678901234567890123456",
-  "userId": "john_doe",
-  "message": "API key generated successfully"
+  "apiKey": "ak_1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+  "userId": "john-doe"
 }
 ```
 
-## 2. Make API Request (Proxy)
+**JavaScript Example**:
+```javascript
+const response = await fetch('https://your-app.vercel.app/api/register?userId=john-doe');
+const data = await response.json();
+console.log('API Key:', data.apiKey);
+```
 
-**Endpoint:** `GET /proxy`
+## 🔄 API Proxy
 
-**Parameters:**
-- `key` (string): Your API key
-- `endpoint` (string): Target API endpoint
+### Basic Weather API Call
+
+**Endpoint**: `GET /api/proxy`
+
+**Parameters**:
+- `key` (required): Your API key
+- `endpoint` (required): Target API endpoint
 - `tag` (optional): Category tag for the request
-- Additional parameters are forwarded to the target API
 
-**Example - Weather API:**
+**Example**:
 ```bash
-curl "https://your-project.cloudfunctions.net/proxy?key=YOUR_API_KEY&endpoint=/forecast&latitude=52.52&longitude=13.41&hourly=temperature_2m&tag=weather:v1"
+curl "https://your-app.vercel.app/api/proxy?key=ak_1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef&endpoint=/forecast&latitude=52.52&longitude=13.41&hourly=temperature_2m&tag=weather:v1"
 ```
 
-**Example - Jokes API:**
-```bash
-curl "https://your-project.cloudfunctions.net/proxy?key=YOUR_API_KEY&endpoint=/jokes/random&tag=jokes:v1"
-```
-
-**Response:**
+**Response**:
 ```json
 {
   "success": true,
@@ -59,192 +63,151 @@ curl "https://your-project.cloudfunctions.net/proxy?key=YOUR_API_KEY&endpoint=/j
     "latitude": 52.52,
     "longitude": 13.41,
     "hourly": {
-      "temperature_2m": [20.5, 19.8, 18.2]
+      "time": ["2024-01-01T00:00", "2024-01-01T01:00"],
+      "temperature_2m": [5.2, 4.8]
     }
   },
   "audit": {
-    "txHash": "0x1234567890abcdef...",
-    "apiKeyHash": "0xabcdef1234567890...",
-    "requestHash": "f3e9a1b2c3d4e5f6...",
-    "timestamp": 1724300000,
+    "txHash": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+    "apiKeyHash": "0x567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234",
+    "requestHash": "abcd1234567890abcdef1234567890abcdef1234567890abcdef1234567890ab",
+    "timestamp": 1704067200,
     "tag": "weather:v1"
   }
 }
 ```
 
-## 3. Get Usage Statistics
+### POST Request Example
 
-**Endpoint:** `GET /usage`
-
-**Parameters:**
-- `key` (string): Your API key
-
-**Example:**
+**Example**:
 ```bash
-curl "https://your-project.cloudfunctions.net/usage?key=YOUR_API_KEY"
+curl -X POST "https://your-app.vercel.app/api/proxy?key=ak_1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef&endpoint=/users&tag=api:v1" \
+  -H "Content-Type: application/json" \
+  -d '{"name": "John Doe", "email": "john@example.com"}'
 ```
 
-**Response:**
+### Custom API Proxy
+
+**Example** (proxying to a different API):
+```bash
+curl "https://your-app.vercel.app/api/proxy?key=ak_1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef&endpoint=/posts&userId=123&tag=blog:v1"
+```
+
+**JavaScript Example**:
+```javascript
+const apiKey = 'ak_1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef';
+
+// Weather API call
+const weatherResponse = await fetch(`https://your-app.vercel.app/api/proxy?key=${apiKey}&endpoint=/forecast&latitude=40.7128&longitude=-74.0060&hourly=temperature_2m&tag=weather:v1`);
+const weatherData = await weatherResponse.json();
+
+// Check blockchain transaction
+if (weatherData.audit?.txHash) {
+  console.log('Blockchain TX:', weatherData.audit.txHash);
+  console.log('View on Etherscan:', `https://sepolia.etherscan.io/tx/${weatherData.audit.txHash}`);
+}
+```
+
+## 📊 Usage Statistics
+
+### Get Usage Data
+
+**Endpoint**: `GET /api/usage`
+
+**Parameters**:
+- `key` (required): Your API key
+
+**Example**:
+```bash
+curl "https://your-app.vercel.app/api/usage?key=ak_1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
+```
+
+**Response**:
 ```json
 {
   "success": true,
   "data": {
     "totalUsage": 15,
+    "apiKey": "ak_1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
     "recentLogs": [
       {
-        "id": "log_123",
-        "apiKey": "a1b2c3d4e5f678901234567890123456",
+        "apiKey": "ak_1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+        "userId": "john-doe",
         "method": "GET",
         "endpoint": "/forecast",
+        "params": {
+          "latitude": "52.52",
+          "longitude": "13.41",
+          "hourly": "temperature_2m"
+        },
         "status": 200,
-        "createdAt": "2024-01-15T10:30:00Z",
-        "requestHash": "f3e9a1b2c3d4e5f6..."
+        "createdAt": "2024-01-01T12:00:00.000Z",
+        "requestHash": "abcd1234567890abcdef1234567890abcdef1234567890abcdef1234567890ab",
+        "tag": "weather:v1",
+        "audit": {
+          "txHash": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
+        }
       }
-    ],
-    "apiKey": "a1b2c3d4..."
+    ]
   }
 }
 ```
 
-## JavaScript Examples
-
-### Using Fetch API
-
+**JavaScript Example**:
 ```javascript
-// Generate API key
-async function generateApiKey(userId) {
-  const response = await fetch(`https://your-project.cloudfunctions.net/register?userId=${userId}`);
-  const data = await response.json();
-  return data.apiKey;
-}
+const response = await fetch(`https://your-app.vercel.app/api/usage?key=${apiKey}`);
+const data = await response.json();
 
-// Make API request
-async function makeApiRequest(apiKey, endpoint, params = {}) {
-  const url = new URL('https://your-project.cloudfunctions.net/proxy');
-  url.searchParams.set('key', apiKey);
-  url.searchParams.set('endpoint', endpoint);
-  
-  // Add additional parameters
-  Object.entries(params).forEach(([key, value]) => {
-    url.searchParams.set(key, value);
-  });
-  
-  const response = await fetch(url);
-  return await response.json();
-}
+console.log('Total Usage:', data.data.totalUsage);
+console.log('Recent Logs:', data.data.recentLogs);
 
-// Get usage statistics
-async function getUsageStats(apiKey) {
-  const response = await fetch(`https://your-project.cloudfunctions.net/usage?key=${apiKey}`);
-  return await response.json();
-}
-
-// Usage example
-const apiKey = await generateApiKey('john_doe');
-const weatherData = await makeApiRequest(apiKey, '/forecast', {
-  latitude: '52.52',
-  longitude: '13.41',
-  hourly: 'temperature_2m',
-  tag: 'weather:v1'
+// Display recent activity
+data.data.recentLogs.forEach(log => {
+  console.log(`${log.method} ${log.endpoint} - ${log.status} - ${log.tag}`);
+  if (log.audit?.txHash) {
+    console.log(`Blockchain: https://sepolia.etherscan.io/tx/${log.audit.txHash}`);
+  }
 });
-const stats = await getUsageStats(apiKey);
 ```
 
-### Using Axios
+## 🔐 Authentication
 
-```javascript
-import axios from 'axios';
+### Using API Key in Headers
 
-const API_BASE = 'https://your-project.cloudfunctions.net';
-
-// Generate API key
-const generateApiKey = async (userId) => {
-  const response = await axios.get(`${API_BASE}/register`, {
-    params: { userId }
-  });
-  return response.data.apiKey;
-};
-
-// Make API request
-const makeApiRequest = async (apiKey, endpoint, params = {}) => {
-  const response = await axios.get(`${API_BASE}/proxy`, {
-    params: {
-      key: apiKey,
-      endpoint,
-      ...params
-    }
-  });
-  return response.data;
-};
-
-// Get usage statistics
-const getUsageStats = async (apiKey) => {
-  const response = await axios.get(`${API_BASE}/usage`, {
-    params: { key: apiKey }
-  });
-  return response.data;
-};
+**Example**:
+```bash
+curl "https://your-app.vercel.app/api/proxy?endpoint=/forecast&latitude=52.52&longitude=13.41" \
+  -H "x-api-key: ak_1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
 ```
 
-## Python Examples
+### Using API Key in Query Parameters
 
-```python
-import requests
-
-API_BASE = "https://your-project.cloudfunctions.net"
-
-def generate_api_key(user_id):
-    response = requests.get(f"{API_BASE}/register", params={"userId": user_id})
-    return response.json()["apiKey"]
-
-def make_api_request(api_key, endpoint, **params):
-    params["key"] = api_key
-    params["endpoint"] = endpoint
-    response = requests.get(f"{API_BASE}/proxy", params=params)
-    return response.json()
-
-def get_usage_stats(api_key):
-    response = requests.get(f"{API_BASE}/usage", params={"key": api_key})
-    return response.json()
-
-# Usage example
-api_key = generate_api_key("john_doe")
-weather_data = make_api_request(
-    api_key, 
-    "/forecast", 
-    latitude="52.52", 
-    longitude="13.41", 
-    hourly="temperature_2m",
-    tag="weather:v1"
-)
-stats = get_usage_stats(api_key)
+**Example**:
+```bash
+curl "https://your-app.vercel.app/api/proxy?key=ak_1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef&endpoint=/forecast&latitude=52.52&longitude=13.41"
 ```
 
-## Blockchain Verification
+## 🏷️ Request Tagging
 
-Every API request is logged to the blockchain. You can verify the transaction using the `txHash` from the response:
+### Using Tags for Categorization
 
-1. **Polygon Mumbai Explorer:** `https://mumbai.polygonscan.com/tx/{txHash}`
-2. **Sepolia Explorer:** `https://sepolia.etherscan.io/tx/{txHash}`
+**Example**:
+```bash
+# Weather API calls
+curl "https://your-app.vercel.app/api/proxy?key=${apiKey}&endpoint=/forecast&latitude=52.52&longitude=13.41&tag=weather:v1"
 
-The transaction will contain:
-- `apiKeyHash`: Hash of your API key (for privacy)
-- `requestHash`: Hash of the request payload
-- `timestamp`: Unix timestamp of the request
-- `tag`: Category tag for the request
+# User API calls
+curl "https://your-app.vercel.app/api/proxy?key=${apiKey}&endpoint=/users&tag=user:v1"
 
-## Error Handling
-
-**Common Error Responses:**
-
-```json
-{
-  "success": false,
-  "error": "Missing API key",
-  "message": "Please provide an API key via 'key' query parameter or 'x-api-key' header"
-}
+# Payment API calls
+curl "https://your-app.vercel.app/api/proxy?key=${apiKey}&endpoint=/payments&tag=payment:v1"
 ```
 
+## 🔍 Error Handling
+
+### Invalid API Key
+
+**Response**:
 ```json
 {
   "success": false,
@@ -253,24 +216,152 @@ The transaction will contain:
 }
 ```
 
+### Missing Parameters
+
+**Response**:
 ```json
 {
   "success": false,
-  "error": "Proxy failed",
-  "message": "Target API returned an error"
+  "error": "Missing endpoint",
+  "message": "Please specify an endpoint parameter"
 }
 ```
 
-## Rate Limiting
+### Blockchain Logging Failed
 
-Currently, there are no rate limits implemented. For production use, consider implementing:
-- Per-user rate limiting
-- Per-endpoint rate limiting
-- Burst protection
+**Response**:
+```json
+{
+  "success": true,
+  "data": { /* API response data */ },
+  "audit": {
+    "error": "Blockchain logging failed",
+    "apiKeyHash": "0x567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234",
+    "requestHash": "abcd1234567890abcdef1234567890abcdef1234567890abcdef1234567890ab",
+    "timestamp": 1704067200,
+    "tag": "weather:v1"
+  }
+}
+```
 
-## Security Notes
+## 📱 Complete Integration Example
 
-- API keys are hashed before being stored on the blockchain
-- Request payloads are hashed for integrity verification
-- Use HTTPS for all API calls
-- Store API keys securely in your applications 
+```javascript
+class ApiUsageTracker {
+  constructor(baseUrl, apiKey) {
+    this.baseUrl = baseUrl;
+    this.apiKey = apiKey;
+  }
+
+  async makeRequest(endpoint, params = {}, tag = 'api:v1') {
+    const url = new URL(`${this.baseUrl}/proxy`);
+    url.searchParams.set('key', this.apiKey);
+    url.searchParams.set('endpoint', endpoint);
+    url.searchParams.set('tag', tag);
+    
+    // Add other parameters
+    Object.entries(params).forEach(([key, value]) => {
+      url.searchParams.set(key, value);
+    });
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (data.success && data.audit?.txHash) {
+      console.log(`Request logged to blockchain: ${data.audit.txHash}`);
+    }
+
+    return data;
+  }
+
+  async getUsageStats() {
+    const response = await fetch(`${this.baseUrl}/usage?key=${this.apiKey}`);
+    return await response.json();
+  }
+
+  async generateApiKey(userId) {
+    const response = await fetch(`${this.baseUrl}/register?userId=${userId}`);
+    return await response.json();
+  }
+}
+
+// Usage
+const tracker = new ApiUsageTracker(
+  'https://your-app.vercel.app/api',
+  'ak_1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef'
+);
+
+// Make a weather API call
+const weather = await tracker.makeRequest('/forecast', {
+  latitude: '52.52',
+  longitude: '13.41',
+  hourly: 'temperature_2m'
+}, 'weather:v1');
+
+// Get usage statistics
+const stats = await tracker.getUsageStats();
+console.log('Total usage:', stats.data.totalUsage);
+```
+
+## 🔗 Blockchain Verification
+
+### View Transaction on Etherscan
+
+After each API call, you can verify the transaction on Sepolia Etherscan:
+
+```javascript
+function viewOnEtherscan(txHash) {
+  const url = `https://sepolia.etherscan.io/tx/${txHash}`;
+  window.open(url, '_blank');
+}
+
+// Usage
+if (response.audit?.txHash) {
+  viewOnEtherscan(response.audit.txHash);
+}
+```
+
+### Verify Request Hash
+
+```javascript
+const crypto = require('crypto');
+
+function verifyRequestHash(method, endpoint, params, body) {
+  const requestShape = JSON.stringify({
+    method,
+    endpoint,
+    params: params || {},
+    body: body || {}
+  });
+  return crypto.createHash('sha256').update(requestShape).digest('hex');
+}
+
+// Verify the request hash from response
+const expectedHash = verifyRequestHash('GET', '/forecast', {
+  latitude: '52.52',
+  longitude: '13.41'
+});
+console.log('Hash matches:', expectedHash === response.audit.requestHash);
+```
+
+## 📊 Rate Limiting
+
+The API includes built-in rate limiting to prevent abuse:
+
+- **Default Limit**: 100 requests per minute per API key
+- **Headers**: Rate limit information included in response headers
+- **Blockchain**: All requests are logged regardless of rate limiting
+
+## 🔒 Security Best Practices
+
+1. **Keep API Keys Secure**: Never expose API keys in client-side code
+2. **Use HTTPS**: Always use HTTPS for API calls
+3. **Validate Responses**: Check the `success` field in all responses
+4. **Monitor Usage**: Regularly check usage statistics
+5. **Verify Blockchain**: Use transaction hashes to verify request integrity
+
+## 📚 Related Documentation
+
+- [Deployment Guide](DEPLOYMENT_GUIDE.md) - How to deploy the application
+- [Blockchain Logging Guide](BLOCKCHAIN_LOGGING.md) - How to check logs on Etherscan
+- [Quick Start Guide](QUICK_START.md) - Get up and running quickly

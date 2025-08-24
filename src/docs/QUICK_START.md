@@ -1,195 +1,175 @@
 # Quick Start Guide
 
-Get your decentralized API usage tracker running with Vercel and MongoDB in minutes!
+Get up and running with the Decentralized API Usage Tracker in minutes.
 
-## Prerequisites
+## 🚀 Prerequisites
 
-- Node.js 18+ installed
-- MongoDB (local or Atlas account)
-- Vercel account (free)
+1. **Node.js 18+** installed
+2. **MongoDB** database (Atlas recommended)
+3. **Ethereum wallet** with Sepolia testnet ETH
+4. **Vercel account** (free tier works)
 
-## 1. Clone and Install
+## ⚡ Quick Setup
 
+### 1. Clone and Install
 ```bash
-# Install dependencies
+git clone <your-repo-url>
+cd decentralized-api-usage-tracker
 npm install
 ```
 
-## 2. Set Up MongoDB
-
-### Option A: MongoDB Atlas (Recommended for production)
-
-1. Go to [MongoDB Atlas](https://www.mongodb.com/atlas) and create a free account
-2. Create a new cluster (free tier is fine)
-3. Get your connection string from the "Connect" button
-4. Add your IP address to the whitelist
-
-### Option B: Local MongoDB
-
-```bash
-# macOS
-brew install mongodb-community
-brew services start mongodb-community
-
-# Ubuntu/Debian
-sudo apt-get install mongodb
-sudo systemctl start mongod
-```
-
-## 3. Configure Environment
-
-```bash
-# Copy environment template
-cp env.example .env.local
-```
-
-Edit `.env.local` with your settings:
-
+### 2. Environment Setup
+Create a `.env.local` file in the root directory:
 ```env
-# MongoDB Configuration
-MONGODB_URI=mongodb://localhost:27017
+# MongoDB
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net
 MONGODB_DB_NAME=api-usage-tracker
 
-# For MongoDB Atlas, use your connection string:
-# MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/database?retryWrites=true&w=majority
+# Blockchain (Sepolia)
+BLOCKCHAIN_RPC=https://sepolia.infura.io/v3/YOUR_PROJECT_ID
+BLOCKCHAIN_PRIVATE_KEY=your_private_key_here
+BLOCKCHAIN_CONTRACT_ADDRESS=your_deployed_contract_address
 
-# Blockchain Configuration (optional for testing)
-BLOCKCHAIN_RPC=https://your-rpc-endpoint
-BLOCKCHAIN_PRIVATE_KEY=your-private-key
-BLOCKCHAIN_CONTRACT_ADDRESS=0xYourContractAddress
-
-# Proxy Configuration
+# API Configuration
 PROXY_TARGET_BASE=https://api.open-meteo.com/v1
 ```
 
-## 4. Initialize Database
-
+### 3. Deploy Smart Contract
 ```bash
-# Set up collections and indexes
-npm run setup
+cd src/blockchain
+npm install
+npx hardhat compile
+npx hardhat run scripts/deploy.js --network sepolia
 ```
 
-You should see:
-```
-✅ MongoDB setup completed successfully!
-
-Collections created:
-- apiKeys (with indexes: apiKey, userId, active)
-- usageLogs (with indexes: apiKey, createdAt, userId, requestHash)
-- usageCounters (with indexes: apiKey)
-```
-
-## 5. Test Locally
-
+### 4. Deploy to Vercel
 ```bash
-# Start development server
-npm run dev
-```
-
-Your API will be available at `http://localhost:3000`
-
-## 6. Test the API
-
-### Register a new API key
-
-```bash
-curl -X POST "http://localhost:3000/api/register?userId=testuser"
-```
-
-Response:
-```json
-{
-  "success": true,
-  "apiKey": "your-generated-api-key",
-  "userId": "testuser",
-  "message": "API key generated successfully"
-}
-```
-
-### Use the proxy
-
-```bash
-curl "http://localhost:3000/api/proxy?key=YOUR_API_KEY&endpoint=/forecast&latitude=52.52&longitude=13.41"
-```
-
-### Check usage stats
-
-```bash
-curl "http://localhost:3000/api/usage?key=YOUR_API_KEY"
-```
-
-## 7. Deploy to Vercel
-
-### Option A: Vercel CLI
-
-```bash
-# Install Vercel CLI
-npm i -g vercel
-
-# Deploy
 npm run deploy
 ```
 
-### Option B: Git-based Deployment
+## 🎯 First Steps
 
-1. Push your code to GitHub
-2. Connect your repository to Vercel
-3. Set environment variables in Vercel dashboard
-4. Deploy automatically on every push
+### 1. Generate API Key
+1. Open your deployed application
+2. Enter a user ID (e.g., "test-user")
+3. Click "Generate API Key"
+4. Copy the generated API key
 
-## Environment Variables for Production
+### 2. Test API Request
+1. Click "Test Request" to make a sample weather API call
+2. Check the response for blockchain transaction details
+3. Click the blockchain icon to view on Etherscan
 
-Set these in your Vercel dashboard:
+### 3. Check Usage Statistics
+1. View your usage statistics in the dashboard
+2. See recent activity with blockchain verification links
+3. Monitor your API usage patterns
 
-- `MONGODB_URI` - Your MongoDB connection string
-- `MONGODB_DB_NAME` - Database name (e.g., `api-usage-tracker`)
-- `BLOCKCHAIN_RPC` - Your blockchain RPC endpoint
-- `BLOCKCHAIN_PRIVATE_KEY` - Your private key for blockchain transactions
-- `BLOCKCHAIN_CONTRACT_ADDRESS` - Your smart contract address
-- `PROXY_TARGET_BASE` - Base URL for proxied APIs
+## 🔗 API Usage Examples
 
-## API Endpoints
+### Basic Weather API Call
+```bash
+curl "https://your-app.vercel.app/api/proxy?key=YOUR_API_KEY&endpoint=/forecast&latitude=52.52&longitude=13.41&hourly=temperature_2m&tag=weather:v1"
+```
 
-After deployment, your endpoints will be at:
-- `https://your-project.vercel.app/api/register`
-- `https://your-project.vercel.app/api/proxy`
-- `https://your-project.vercel.app/api/usage`
+### Custom API Proxy
+```bash
+curl "https://your-app.vercel.app/api/proxy?key=YOUR_API_KEY&endpoint=/your-endpoint&param1=value1&tag=custom:v1"
+```
 
-## What's Next?
+### Get Usage Statistics
+```bash
+curl "https://your-app.vercel.app/api/usage?key=YOUR_API_KEY"
+```
 
-1. **Customize**: Modify the proxy target API
-2. **Monitor**: Set up monitoring and alerts
-3. **Scale**: Optimize for your traffic patterns
-4. **Secure**: Add authentication and rate limiting
-5. **Document**: Create API documentation for your users
+## 🔍 Verify on Blockchain
 
-## Troubleshooting
+1. **Get Transaction Hash**: From API response `audit.txHash`
+2. **View on Etherscan**: https://sepolia.etherscan.io/tx/{txHash}
+3. **Check Event Logs**: Look for `ApiUsageLogged` event
+
+## 📊 Monitor Usage
+
+### Dashboard Features
+- **Real-time Statistics**: Total API calls and usage patterns
+- **Recent Activity**: Latest requests with blockchain links
+- **API Key Management**: Generate and manage multiple keys
+- **Test Interface**: Built-in API testing functionality
+
+### Blockchain Verification
+- **Transaction History**: All API calls logged to Sepolia
+- **Event Logs**: Detailed request information on-chain
+- **Audit Trail**: Immutable record of all usage
+
+## 🛠️ Development
+
+### Local Development
+```bash
+npm run dev
+```
+
+### Build and Preview
+```bash
+npm run build
+npm run preview
+```
+
+### Database Setup
+```bash
+npm run setup
+```
+
+## 🔧 Configuration
+
+### Environment Variables
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `MONGODB_URI` | MongoDB connection string | Yes |
+| `MONGODB_DB_NAME` | Database name | No (default: api-usage-tracker) |
+| `BLOCKCHAIN_RPC` | Sepolia RPC endpoint | Yes |
+| `BLOCKCHAIN_PRIVATE_KEY` | Wallet private key | Yes |
+| `BLOCKCHAIN_CONTRACT_ADDRESS` | Deployed contract address | Yes |
+| `PROXY_TARGET_BASE` | Target API base URL | No (default: Open-Meteo) |
+
+### Smart Contract Configuration
+- **Network**: Sepolia testnet
+- **Gas Limit**: 300,000 (recommended)
+- **Gas Price**: Auto (recommended)
+
+## 🚨 Troubleshooting
 
 ### Common Issues
 
-**MongoDB Connection Failed**
-- Check your connection string format
-- Verify network connectivity
-- Ensure MongoDB is running
+1. **"Invalid API Key"**
+   - Ensure the API key is correct
+   - Check if the key is active in the database
 
-**Environment Variables Not Working**
-- Check variable names match exactly
-- Redeploy after adding new variables
-- Use `.env.local` for local development
+2. **"Blockchain logging failed"**
+   - Verify Sepolia RPC endpoint
+   - Check wallet has sufficient ETH
+   - Ensure contract address is correct
 
-**API Key Not Found**
-- Run the setup script: `npm run setup`
-- Check MongoDB collections exist
-- Verify API key format
+3. **"MongoDB connection failed"**
+   - Verify connection string
+   - Check network access
+   - Ensure database exists
 
-### Getting Help
+### Debug Steps
+1. Check Vercel function logs
+2. Verify environment variables
+3. Test blockchain connection
+4. Check MongoDB connectivity
 
-- Check the [MongoDB Migration Guide](MONGODB_MIGRATION.md)
-- Check the [Vercel Migration Guide](VERCEL_MIGRATION.md)
-- Review the [API Examples](docs/API_EXAMPLES.md)
+## 📚 Next Steps
 
-## Support
+- [Deployment Guide](DEPLOYMENT_GUIDE.md) - Detailed deployment instructions
+- [Blockchain Logging Guide](BLOCKCHAIN_LOGGING.md) - How to check logs on Etherscan
+- [API Documentation](API_EXAMPLES.md) - Complete API reference
+- [MongoDB Migration](MONGODB_MIGRATION.md) - Database setup guide
 
-- **Issues**: Create an issue in the repository
-- **Documentation**: Check the guides in this repository
-- **Community**: Join our discussions 
+## 🆘 Support
+
+- **Issues**: Create a GitHub issue
+- **Documentation**: Check the docs folder
+- **Community**: Join our Discord/Telegram
+- **Email**: support@yourdomain.com

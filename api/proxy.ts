@@ -153,7 +153,8 @@ module.exports = async function handler(req, res) {
       await session.endSession();
     }
 
-    // Log to blockchain (fire and forget for performance)
+    // Log to blockchain and store transaction hash in MongoDB
+    let txHash = null;
     try {
       const tx = await usageLogger.logUsage(
         apiKeyHashBytes32,
@@ -162,13 +163,20 @@ module.exports = async function handler(req, res) {
         tag
       );
       const receipt = await tx.wait();
+      txHash = receipt?.hash;
+
+      // Update MongoDB usage log with transaction hash
+      await usageLogsCollection.updateOne(
+        { requestHash: requestHashHex },
+        { $set: { txHash: txHash } }
+      );
 
       // Return response with audit information
       res.status(apiResp.status).json({
         success: true,
         data: apiResp.data,
         audit: {
-          txHash: receipt?.hash,
+          txHash: txHash,
           apiKeyHash: apiKeyHashBytes32,
           requestHash: requestHashHex,
           timestamp: timestampSec,

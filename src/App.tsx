@@ -137,7 +137,7 @@ function App() {
   }
 
   const openBlockchainExplorer = (txHash: string) => {
-    window.open(`https://mumbai.polygonscan.com/tx/${txHash}`, '_blank')
+    window.open(`https://sepolia.etherscan.io/tx/${txHash}`, '_blank')
   }
 
   return (
@@ -149,7 +149,7 @@ function App() {
             📡 API Usage Tracker
           </h1>
           <p className="text-gray-600">
-            Track API usage with Firebase and blockchain verification
+            Track API usage with MongoDB and Sepolia blockchain verification
           </p>
         </div>
 
@@ -290,7 +290,7 @@ function App() {
                             {log.status}
                           </span>
                           
-                          {log.audit?.txHash && (
+                          {log.txHash && (
                             <button
                               onClick={() => openBlockchainExplorer(log.audit.txHash)}
                               className="text-primary-600 hover:text-primary-700"
@@ -312,10 +312,10 @@ function App() {
         {/* Footer */}
         <div className="mt-12 text-center text-gray-500 text-sm">
           <p>
-            Built with React, Firebase Functions, and Solidity
+            Built with React, Vercel Functions, and Solidity
           </p>
           <p className="mt-2">
-            All API usage is logged to both Firestore and the blockchain for transparency
+            All API usage is logged to both MongoDB and the Sepolia blockchain for transparency
           </p>
         </div>
       </div>
