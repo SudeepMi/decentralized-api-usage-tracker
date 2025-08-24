@@ -4,7 +4,7 @@ import toast from 'react-hot-toast'
 import axios from 'axios'
 
 // Configuration - replace with your Vercel Functions URL
-const API_BASE_URL = 'https://decentralized-api-usage-tracker.vercel.app'
+const API_BASE_URL = 'https://decentralized-api-usage-tracker.vercel.app/api'
 
 interface UsageData {
   totalUsage: number
