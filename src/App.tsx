@@ -292,10 +292,11 @@ function App() {
                           
                           {log.txHash && (
                             <button
-                              onClick={() => openBlockchainExplorer(log.audit.txHash)}
+                              onClick={() => openBlockchainExplorer(log.txHash)}
                               className="text-primary-600 hover:text-primary-700"
                               title="View on blockchain"
                             >
+                              <span className="sr-only">View on blockchain</span>
                               <ExternalLink className="w-4 h-4" />
                             </button>
                           )}
