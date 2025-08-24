@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vercel dev",
     "build": "tsc && vite build",
+    "build:api": "tsc --project api/tsconfig.json",
     "preview": "vite preview",
     "deploy": "vercel --prod",
     "start": "vercel dev",
@@ -13,7 +14,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
-    "@vercel/node": "^3.0.0",
+    "@vercel/node": "^5.3.13",
     "axios": "^1.7.2",
     "ethers": "^6.13.0",
     "mongodb": "^6.3.0",

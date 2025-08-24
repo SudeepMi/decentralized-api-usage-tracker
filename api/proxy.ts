@@ -1,8 +1,12 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
-import axios from 'axios';
-import crypto from 'crypto';
-import { ethers } from 'ethers';
-import { MongoClient } from 'mongodb';
+declare const require: any;
+declare const module: any;
+declare const process: any;
+declare const console: any;
+
+const axios = require('axios');
+const crypto = require('crypto');
+const { ethers } = require('ethers');
+const { MongoClient } = require('mongodb');
 
 // MongoDB connection
 const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017';
@@ -31,7 +35,7 @@ const sha256Hex = (s: string): string =>
 const keccakBytes32 = (s: string): string =>
   ethers.keccak256(ethers.toUtf8Bytes(s));
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+module.exports = async function handler(req, res) {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');

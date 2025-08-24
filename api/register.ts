@@ -1,13 +1,12 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { MongoClient } from 'mongodb';
-import { v4 as uuidv4 } from 'uuid';
-import crypto from 'crypto';
+const { MongoClient } = require('mongodb');
+const { v4: uuidv4 } = require('uuid');
+const crypto = require('crypto');
 
 // MongoDB connection
 const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017';
 const client = new MongoClient(uri);
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+module.exports = async function handler(req, res) {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
